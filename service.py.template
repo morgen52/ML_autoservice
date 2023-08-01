@@ -1,0 +1,53 @@
+
+
+# A Flask server that serves the model.
+
+# Path: inference_example_service/service.py
+
+import os
+import json
+from flask import Flask, request, jsonify
+import base64
+
+app = Flask(__name__)
+
+@app.route('/inference', methods=['POST'])
+def inference():
+    # 获取POST请求中的文件路径和文件二进制内容: 
+    # {"input": [arg1, arg2, ...]}
+
+    contents = request.get_json()
+
+    input_paths = "$input_path".split(";")[:-1]
+    input_type = "$input_type".split(";")[:-1]
+
+    for idx, file in enumerate(contents["input"]):
+        input_path = input_paths[idx]
+        input_content = file["content"]
+        if input_type[idx] == "image":
+            decoded_data = base64.b64decode(input_content)
+            with open(f"{input_path}", "wb") as image_file:
+                image_file.write(decoded_data)
+        else:
+            with open(f"{input_path}", "w", encoding="utf8") as f:
+                f.write(input_content)
+    
+    CMD = "$entrypoint"
+    error = ""
+    try:
+        os.system(CMD)
+    except Exception as e:
+        error = str(e)
+
+    # 读取预测结果
+    with open("$output_path", 'r', encoding="utf8") as f:
+        output = {
+            "results": json.load(f),
+            "error": error
+        }
+    
+    return jsonify(output)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+

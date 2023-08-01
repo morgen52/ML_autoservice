@@ -1,0 +1,11 @@
+import requests
+import json
+import base64
+
+$prepare
+content = $content
+url = "$url"
+
+headers = {"Content-type": "application/json"}
+response = requests.post(url, data=json.dumps(content), headers=headers)
+print(response.json())

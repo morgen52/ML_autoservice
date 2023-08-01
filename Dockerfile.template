@@ -1,0 +1,5 @@
+FROM $base_image
+COPY . /app
+WORKDIR /app
+RUN pip install Flask
+RUN pip install -r requirements.txt

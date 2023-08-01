@@ -1,0 +1,21 @@
+{
+    "name":"regnet-classification",
+    "input":[
+        {
+            "path":"input/1.jpeg",
+            "type":"image"
+        },
+        {
+            "path":"2.txt",
+            "type":"text"
+        }
+    ],
+    "output":[
+        {
+            "path":"output/output.json",
+            "type":"json"
+        }
+    ],
+    "base_image": "pytorch/pytorch:2.0.0-cuda11.7-cudnn8-runtime",
+    "entrypoint": "python inference.py"
+}
