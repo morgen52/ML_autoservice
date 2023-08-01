@@ -57,9 +57,9 @@ if __name__ == "__main__":
     delete(name)
     list()
 
-    name = create()
-    name = list()["message"][0]
-    update(name)
+    # name = create()
+    # name = list()["message"][0]
+    # update(name)
     
 
 

@@ -6,6 +6,8 @@ import json
 import sqlite3
 import re
 
+CONST_IP = "0.0.0.0"
+
 app = Flask(__name__)
 
 def gen_Dockerfile(workspace, base_image="pytorch/pytorch:2.0.0-cuda11.7-cudnn8-runtime"):
@@ -205,7 +207,7 @@ def create():
     if not r:
         return error
 
-    url = f"http://0.0.0.0:{port}/inference"
+    url = f"http://{CONST_IP}:{port}/inference"
     # 返回一个调用示例
     template = gen_callpy(f"{root_dir}/{workspace}", input_type, url)
 
@@ -231,11 +233,15 @@ def delete():
     r, port = handle_database(name, mode="delete")
     if not r:
         return jsonify({'result': 'error', 'message': port})
-    try:
+    
+    try:# 停止docker容器
         os.system(f"docker stop {name}")
     except Exception as e:
         return jsonify({'result': 'error', 'message': str(e)})
+    # 删除workspace文件夹
     os.system(f"rm -rf workspace/{name}")
+    # 删除docker镜像
+    os.system(f"docker rmi {name}:0.0")
     return jsonify({'result': 'success', 'message': 'delete success'})
 
 @app.route('/get', methods=['POST'])
@@ -308,6 +314,7 @@ def update():
     r, error = gen_docker(root_dir, workspace, f"{name}_new", port, version="0.1")
     if not r:
         return error
+    # 如果这一步出错了，则之前的文件夹都不会被删除，也不会有新的镜像生成，之前的容器仍然可用
     
     # 停止旧的容器
     try:
@@ -329,7 +336,7 @@ def update():
     if not r:
         return error
 
-    url = f"http://0.0.0.0:{port}/inference"
+    url = f"http://{CONST_IP}:{port}/inference"
     # 返回一个调用示例
     template = gen_callpy(f"{root_dir}/{workspace}", input_type, url)
 
