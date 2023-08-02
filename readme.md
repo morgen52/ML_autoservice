@@ -114,3 +114,7 @@ def update(name, filepath):
     pass
 ```
 
+## 其他说明
+
+- 代码仓库：https://github.com/morgen52/ML_autoservice.git
+- Demo：https://disk.pku.edu.cn:443/link/CFEDE1AD31B839BCCEE927CE3BC302FE
