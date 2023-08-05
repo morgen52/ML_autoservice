@@ -118,3 +118,21 @@ def update(name, filepath):
 
 - 代码仓库：https://github.com/morgen52/ML_autoservice.git
 - Demo：https://disk.pku.edu.cn:443/link/CFEDE1AD31B839BCCEE927CE3BC302FE
+
+## 工具部署：
+
+### 1. 修改IP地址（工具的和ML服务的）
+- **工具URL：**修改example/call_tool.py中的base_url，指定工具的IP（本机IP地址）和端口号（默认8000）
+- **ML服务URL：**修改tool.py中的CONST_IP为本机IP，工具将基于该IP地址提供ML服务URL。
+
+### 2. 创建执行环境并部署工具：
+
+```bash
+conda create --name <env> --file ./requirements.txt
+conda activate <env>
+python tool.py
+```
+
+
+
+
