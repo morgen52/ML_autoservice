@@ -122,8 +122,8 @@ def update(name, filepath):
 ## 工具部署：
 
 ### 1. 修改IP地址（工具的和ML服务的）
-- **工具URL：**修改example/call_tool.py中的base_url，指定工具的IP（本机IP地址）和端口号（默认8000）
-- **ML服务URL：**修改tool.py中的CONST_IP为本机IP，工具将基于该IP地址提供ML服务URL。
+- 指定工具URL：修改example/call_tool.py中的base_url，指定工具的IP（本机IP地址）和端口号（默认8000）
+- 指定ML服务URL：修改tool.py中的CONST_IP为本机IP，工具将基于该IP地址提供ML服务URL。
 
 ### 2. 创建执行环境并部署工具：
 
